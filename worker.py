@@ -39,10 +39,12 @@ def do_worker(worker_load: tuple[str, list[int]]) -> dict[int, Any]:
     size_list = [size for size in worker_load[1]]
     num_threads = NUM_THREADS[tier]
 
-    results = {tid: {"sizes": []} for tid in range(num_threads)}
+    results: dict[int, Any] = {tid: {"sizes": []} for tid in range(num_threads)}
 
     clock = 0
-    threads = {tid: (clock, None) for tid in range(num_threads)}  # values: (start, size)
+    threads: dict[int, tuple[int, int | None]] = {
+        tid: (clock, None) for tid in range(num_threads)
+    }  # values: (start, size)
 
     while True:
         # fill empty threads if there are todo
